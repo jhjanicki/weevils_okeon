@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible">
+<title></title>
+<head>
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+html, body{
+	height:100%;
+}
+
+.axis line,.axis path {
+		  fill: none;
+		  stroke: #000;
+		  shape-rendering: crispEdges;
+		}
+.grid .tick {
+    stroke: lightgrey;
+    opacity: 0.7;
+}
+.grid path {
+      stroke-width: 0;
+}
+
+</style>
+</head>
+
+<body>
+<div>
+	<div class="row">
+			<div class="col-md-4">
+				<div id="chart1"></div> 
+			</div>
+			<div class="col-md-4">
+				<div id="chart2"></div>
+			</div>
+			<div class="col-md-4">
+				<div id="chart3"></div>
+			</div>
+	</div>
+	<div class="row">
+			<div class="col-md-4">
+				<div id="chart4"></div> 
+			</div>
+			<div class="col-md-4">
+				<div id="chart5"></div>
+			</div>
+			<div class="col-md-4">
+				<div id="chart6"></div>
+			</div>
+	</div>
+	<div class="row">
+			<div class="col-md-4">
+				<div id="chart7"></div> 
+			</div>
+			<div class="col-md-4">
+				<div id="chart8"></div>
+			</div>
+			<div class="col-md-4">
+				<div id="chart9"></div>
+			</div>
+	</div>
+</div>
+
+<!-- D3-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+
+<!-- D3.geo -->
+<script src="https://d3js.org/d3.geo.projection.v0.min.js"></script>
+
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="bar.js"></script>
+
+<script>
+
+
+	var oku = [{"time":"2016-02-19","values":[{"specimen_count":2,"trap":"S0047", "species":2},{"specimen_count":1,"trap":"S0048", "species":1},{"specimen_count":0,"trap":"S0049", "species":0}]},{"time":"2016-03-04","values":[{"specimen_count":10,"trap":"S0047", "species":5},{"specimen_count":12,"trap":"S0048", "species":2},{"specimen_count":8,"trap":"S0049", "species":3}]},{"time":"2016-03-18","values":[{"specimen_count":6,"trap":"S0047", "species":4},{"specimen_count":16,"trap":"S0048", "species":4},{"specimen_count":11,"trap":"S0049", "species":6}]},{"time":"2016-04-01","values":[{"specimen_count":14,"trap":"S0047", "species":7},{"specimen_count":12,"trap":"S0048", "species":7},{"specimen_count":8,"trap":"S0049", "species":7}]},{"time":"2016-04-15","values":[{"specimen_count":18,"trap":"S0047", "species":12},{"specimen_count":20,"trap":"S0048", "species":7},{"specimen_count":8,"trap":"S0049", "species":5}]}];
+
+	var yona = [{"time":"2016-02-19","values":[{"specimen_count":1,"trap":"S0024", "species":1},{"specimen_count":2,"trap":"S0025", "species":2},{"specimen_count":2,"trap":"S0026", "species":2}]},{"time":"2016-03-04","values":[{"specimen_count":6,"trap":"S0024", "species":6},{"specimen_count":5,"trap":"S0025", "species":4},{"specimen_count":7,"trap":"S0026", "species":6}]},{"time":"2016-03-18","values":[{"specimen_count":7,"trap":"S0024", "species":5},{"specimen_count":14,"trap":"S0025", "species":7},{"specimen_count":15,"trap":"S0026", "species":5}]},{"time":"2016-04-01","values":[{"specimen_count":24,"trap":"S0024", "species":8},{"specimen_count":43,"trap":"S0025", "species":7},{"specimen_count":19,"trap":"S0026", "species":8}]},{"time":"2016-04-15","values":[{"specimen_count":25,"trap":"S0024", "species":9},{"specimen_count":53,"trap":"S0025", "species":16},{"specimen_count":43,"trap":"S0026", "species":12}]}];
+
+	var hentona = [{"time":"2016-02-19","values":[{"specimen_count":6,"trap":"S0015", "species":4},{"specimen_count":6,"trap":"S0016", "species":6},{"specimen_count":3,"trap":"S0017", "species":2}]},{"time":"2016-03-04","values":[{"specimen_count":10,"trap":"S0015", "species":8},{"specimen_count":17,"trap":"S0016", "species":10},{"specimen_count":4,"trap":"S0017", "species":4}]},{"time":"2016-03-18","values":[{"specimen_count":12,"trap":"S0015", "species":11},{"specimen_count":8,"trap":"S0016", "species":7},{"specimen_count":8,"trap":"S0017", "species":6}]},{"time":"2016-04-01","values":[{"specimen_count":29,"trap":"S0015", "species":15},{"specimen_count":37,"trap":"S0016", "species":12},{"specimen_count":9,"trap":"S0017", "species":7}]},{"time":"2016-04-15","values":[{"specimen_count":33,"trap":"S0015", "species":15},{"specimen_count":66,"trap":"S0016", "species":16},{"specimen_count":13,"trap":"S0017", "species":10}]}];
+
+	var genka = [{"time":"2016-02-19","values":[{"specimen_count":4,"trap":"S0021", "species":2},{"specimen_count":8,"trap":"S0022", "species":3},{"specimen_count":1,"trap":"S0023", "species":1}]},{"time":"2016-03-04","values":[{"specimen_count":1,"trap":"S0021", "species":1},{"specimen_count":9,"trap":"S0022", "species":6},{"specimen_count":2,"trap":"S0023", "species":2}]},{"time":"2016-03-18","values":[{"specimen_count":1,"trap":"S0021", "species":1},{"specimen_count":20,"trap":"S0022", "species":7},{"specimen_count":5,"trap":"S0023", "species":5}]},{"time":"2016-04-01","values":[{"specimen_count":4,"trap":"S0021", "species":2},{"specimen_count":29,"trap":"S0022", "species":8},{"specimen_count":10,"trap":"S0023", "species":5}]},{"time":"2016-04-15","values":[{"specimen_count":3,"trap":"S0021", "species":1},{"specimen_count":32,"trap":"S0022", "species":6},{"specimen_count":8,"trap":"S0023", "species":5}]}];
+
+	var nago = [{"time":"N/A","values":[{"specimen_count":null,"trap":"S0068", "species":null},{"specimen_count":null,"trap":"S0069", "species":null},{"specimen_count":null,"trap":"S0070", "species":null}]},{"time":"2016-03-03","values":[{"specimen_count":2,"trap":"S0068", "species":2},{"specimen_count":6,"trap":"S0069", "species":5},{"specimen_count":5,"trap":"S0070", "species":2}]},{"time":"2016-03-17","values":[{"specimen_count":5,"trap":"S0068", "species":4},{"specimen_count":3,"trap":"S0069", "species":3},{"specimen_count":7,"trap":"S0070", "species":4}]},{"time":"2016-03-31","values":[{"specimen_count":4,"trap":"S0068", "species":4},{"specimen_count":7,"trap":"S0069", "species":4},{"specimen_count":2,"trap":"S0070", "species":2}]},{"time":"2016-04-14","values":[{"specimen_count":11,"trap":"S0068", "species":9},{"specimen_count":11,"trap":"S0069", "species":6},{"specimen_count":5,"trap":"S0070", "species":3}]}];
+
+	var oist = [{"time":"2016-02-24","values":[{"specimen_count":0,"trap":"S0004", "species":0},{"specimen_count":0,"trap":"S0005", "species":0},{"specimen_count":1,"trap":"S0006", "species":1}]},{"time":"2016-03-09","values":[{"specimen_count":1,"trap":"S0004", "species":1},{"specimen_count":2,"trap":"S0005", "species":1},{"specimen_count":3,"trap":"S0006", "species":3}]},{"time":"2016-03-23","values":[{"specimen_count":2,"trap":"S0004", "species":2},{"specimen_count":1,"trap":"S0005", "species":1},{"specimen_count":3,"trap":"S0006", "species":2}]},{"time":"2016-04-06","values":[{"specimen_count":3,"trap":"S0004", "species":3},{"specimen_count":1,"trap":"S0005", "species":1},{"specimen_count":3,"trap":"S0006", "species":2}]},{"time":"2016-04-20","values":[{"specimen_count":2,"trap":"S0004", "species":2},{"specimen_count":2,"trap":"S0005", "species":2},{"specimen_count":5,"trap":"S0006", "species":4}]}];
+
+	var takiyambaru = [{"time":"2016-02-24","values":[{"specimen_count":4,"trap":"S0012", "species":3},{"specimen_count":0,"trap":"S0013", "species":0},{"specimen_count":2,"trap":"S0014", "species":2}]},{"time":"2016-03-09","values":[{"specimen_count":8,"trap":"S0012", "species":3},{"specimen_count":4,"trap":"S0013", "species":1},{"specimen_count":8,"trap":"S0014", "species":6}]},{"time":"2016-03-23","values":[{"specimen_count":5,"trap":"S0012", "species":3},{"specimen_count":3,"trap":"S0013", "species":2},{"specimen_count":7,"trap":"S0014", "species":6}]},{"time":"2016-04-06","values":[{"specimen_count":5,"trap":"S0012", "species":3},{"specimen_count":6,"trap":"S0013", "species":2},{"specimen_count":10,"trap":"S0014", "species":5}]},{"time":"2016-04-20","values":[{"specimen_count":1,"trap":"S0012", "species":1},{"specimen_count":4,"trap":"S0013", "species":1},{"specimen_count":8,"trap":"S0014", "species":5}]}];
+
+    var kurashiki = [{"time":"2016-02-24","values":[{"specimen_count":4,"trap":"S0029", "species":3},{"specimen_count":4,"trap":"S0030", "species":4},{"specimen_count":6,"trap":"S0031", "species":6}]},{"time":"2016-03-09","values":[{"specimen_count":4,"trap":"S0029", "species":4},{"specimen_count":2,"trap":"S0030", "species":2},{"specimen_count":6,"trap":"S0031", "species":6}]},{"time":"2016-03-23","values":[{"specimen_count":19,"trap":"S0029", "species":10},{"specimen_count":5,"trap":"S0030", "species":4},{"specimen_count":10,"trap":"S0031", "species":8}]},{"time":"2016-04-06","values":[{"specimen_count":12,"trap":"S0029", "species":9},{"specimen_count":4,"trap":"S0030", "species":3},{"specimen_count":15,"trap":"S0031", "species":10}]},{"time":"2016-04-20","values":[{"specimen_count":7,"trap":"S0029", "species":7},{"specimen_count":4,"trap":"S0030", "species":2},{"specimen_count":15,"trap":"S0031", "species":10}]}];
+
+	var senabaru = [{"time":"N/A","values":[{"specimen_count":null,"trap":"S0032", "species":null},{"specimen_count":null,"trap":"S0033", "species":null},{"specimen_count":null,"trap":"S0034", "species":null}]},{"time":"2016-03-02","values":[{"specimen_count":3,"trap":"S0032", "species":3},{"specimen_count":13,"trap":"S0033", "species":8},{"specimen_count":4,"trap":"S0034", "species":4}]},{"time":"2016-03-16","values":[{"specimen_count":7,"trap":"S0032", "species":7},{"specimen_count":29,"trap":"S0033", "species":11},{"specimen_count":8,"trap":"S0034", "species":7}]},{"time":"2016-03-30","values":[{"specimen_count":15,"trap":"S0032", "species":11},{"specimen_count":32,"trap":"S0033", "species":16},{"specimen_count":23,"trap":"S0034", "species":13}]},{"time":"2016-04-13","values":[{"specimen_count":20,"trap":"S0032", "species":11},{"specimen_count":18,"trap":"S0033", "species":11},{"specimen_count":14,"trap":"S0034", "species":8}]}];
+
+
+	 var chart = d3.custom.bar()._index(0);
+	
+		chart.site('Oku');
+	
+	 d3.select('#chart1')
+		.datum(oku)
+		.call(chart); 
+	
+	var chart2 = d3.custom.bar()._index(1);
+		
+		chart2.site('Yona');
+		
+	 d3.select('#chart2')
+		.datum(yona)
+		.call(chart2); 
+		
+	var chart3 = d3.custom.bar()._index(2);
+
+		chart3.site('Hentona');
+	
+	 d3.select('#chart3')
+		.datum(hentona)
+		.call(chart3);
+		
+	var chart4 = d3.custom.bar()._index(3);
+
+		chart4.site('Genka');
+	
+	 d3.select('#chart4')
+		.datum(genka)
+		.call(chart4);
+		
+	var chart5 = d3.custom.bar()._index(4);
+
+		chart5.site('Nago');
+	
+	 d3.select('#chart5')
+		.datum(nago)
+		.call(chart5);
+		
+	var chart6 = d3.custom.bar()._index(5);
+
+		chart6.site('OIST');
+	
+	 d3.select('#chart6')
+		.datum(oist)
+		.call(chart6);
+		
+	
+	var chart7 = d3.custom.bar()._index(6);
+
+		chart7.site('Takiyambaru');
+	
+	 d3.select('#chart7')
+		.datum(takiyambaru)
+		.call(chart7);
+		
+	var chart8 = d3.custom.bar()._index(7);
+
+		chart8.site('Kurashiki');
+	
+	 d3.select('#chart8')
+		.datum(kurashiki)
+		.call(chart8);
+		
+	
+	var chart9 = d3.custom.bar()._index(8);
+
+		chart9.site('Senabaru');
+	
+	 d3.select('#chart9')
+		.datum(senabaru)
+		.call(chart9);
+    
+
+	
+	
+
+</script>
+
+
+</body>
